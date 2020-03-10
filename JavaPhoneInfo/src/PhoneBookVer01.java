@@ -1,7 +1,7 @@
 /**
  * @author	김종형
  * @since	2020.03.10
- * @version ver.0.3
+ * @version ver.0.4
  */
 
 import java.util.Scanner;
@@ -9,25 +9,46 @@ import java.util.Scanner;
 class PhoneInfo {
 	String name;
 	String num;
-	String birth;
-	
-	public PhoneInfo(String name, String num, String br) {
-		this.name = name;
-		this.num = num;
-		birth = br;
-	}
+
 	public PhoneInfo(String name, String num) {
 		this.name = name;
-		this.num = num;
-		this.birth = null;
+		this.num = num;		
 	}
 	public void showPhoneInfo() {
-		System.out.println("*** \t 데이터 출력을 시작합니다.");
+		System.out.println("정보 출력을 시작합니다.");
+		System.out.println("*************************");
 		System.out.println("name : " + name);
 		System.out.println("phone : " + num);
-		if(birth != null) {
-			System.out.println("birth : " + birth);
-		}
+	}
+}
+class PhoneUnivInfo extends PhoneInfo	{
+	String major;
+	int year;
+	
+	public PhoneUnivInfo(String name, String num, String major, int year) {
+		super(name, num);
+		this.major = major;
+		this.year = year;
+	}
+	@Override
+	public void showPhoneInfo() {
+		super.showPhoneInfo();
+		System.out.println("major : " + major);
+		System.out.println("year : " + year);
+	}
+}
+class PhoneCompanyInfo extends PhoneInfo {
+	
+	String company;
+	
+	public PhoneCompanyInfo(String name, String num, String comp) {
+		super(name, num);
+		company = comp;
+	}
+	@Override
+	public void showPhoneInfo() {
+		super.showPhoneInfo();
+		System.out.println("company : " + company);
 	}
 }
 class PhoneBookManager {
@@ -36,16 +57,59 @@ class PhoneBookManager {
 	int curCnt = 0;
 	
 	Scanner sc = new Scanner(System.in);
+	
+	private PhoneInfo readFriendInfo() {
+		System.out.print("이름 : ");
+		String name = sc.nextLine();
+		System.out.print("전화번호 : ");
+		String num = sc.nextLine();
+		
+		return new PhoneInfo(name, num);
+	}
+	private PhoneInfo readUnivFriendInfo() {
+		System.out.println("이름 : ");
+		String name = sc.nextLine();
+		System.out.println("전화번호 : ");
+		String num = sc.nextLine();
+		System.out.println("전공 : " );
+		String major = sc.nextLine();
+		System.out.println("학년 : ");
+		int year = sc.nextInt();
+		sc.nextLine();
+		
+		return new PhoneUnivInfo(name, num, major, year);
+	}
+	private PhoneInfo readCompFriendInfo() {
+		System.out.println("이름 : ");
+		String name = sc.nextLine();
+		System.out.println("전화번호 : ");
+		String num = sc.nextLine();
+		System.out.println("회사 : ");
+		String comp = sc.nextLine();
+		
+		return new PhoneCompanyInfo(name, num, comp);
+	}
+	
 	public void inputData() {
 		System.out.println("정보 입력을 시작합니다.");
-		System.out.print("이름 : ");
-		String na = sc.nextLine();
-		System.out.print("전화번호 : ");
-		String nu = sc.nextLine();
-		System.out.print("생년월일 : ");
-		String br = sc.nextLine();
+		System.out.println("1. 일반 ,  2. 대학 , 3. 회사");
+		System.out.print("선택 ==> ");
+		int ci = sc.nextInt();
+		sc.nextLine();
+		PhoneInfo info = null;
 		
-		phInfo[curCnt] = new PhoneInfo(na, nu, br);
+		switch(ci) {
+		case 1 :
+			info = readFriendInfo();
+			break;
+		case 2 :
+			info = readUnivFriendInfo();
+			break;
+		case 3 :
+			info = readCompFriendInfo();
+			break;
+		}
+		phInfo[curCnt] = info; 
 		curCnt++;
 		System.out.println("데이터 입력이 완료되었습니다. \n");
 	}
