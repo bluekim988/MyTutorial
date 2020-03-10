@@ -1,146 +1,128 @@
-import java.lang.reflect.Array;
-import java.util.Scanner;
-
-/*
- * 전화번호 관리 프로그램 구현 프로잭트
- * version 0.2
+/**
+ * @author	김종형
+ * @since	2020.03.10
+ * @version ver.0.3
  */
 
+import java.util.Scanner;
 
 class PhoneInfo {
 	String name;
-	String phoneNumber;
-	String birthday;
-
-	public PhoneInfo(String na, String pn, String br) {
-		name = na;
-		phoneNumber = pn;
-		birthday = br;
+	String num;
+	String birth;
+	
+	public PhoneInfo(String name, String num, String br) {
+		this.name = name;
+		this.num = num;
+		birth = br;
 	}
-
-	public PhoneInfo(String na, String pn) {
-		name = na;
-		phoneNumber = pn;
+	public PhoneInfo(String name, String num) {
+		this.name = name;
+		this.num = num;
+		this.birth = null;
 	}
-
-	public void showInfo() {
-		if(birthday != null)
-			System.out.println
-			("이름 : " + name + "\t" + "전화번호 : " + phoneNumber + "\t" + "생년월일 : " + birthday);
-		else 
-			System.out.println("이름 : " + name + "\t" + "전화번호 : " + phoneNumber);
-		System.out.println();
+	public void showPhoneInfo() {
+		System.out.println("*** \t 데이터 출력을 시작합니다.");
+		System.out.println("name : " + name);
+		System.out.println("phone : " + num);
+		if(birth != null) {
+			System.out.println("birth : " + birth);
+		}
 	}
 }
-
 class PhoneBookManager {
-	final int MAX_CNT=100;
+	final int MAX_CNT = 100;
 	PhoneInfo[] phInfo = new PhoneInfo[MAX_CNT];
 	int curCnt = 0;
 	
+	Scanner sc = new Scanner(System.in);
 	public void inputData() {
-		System.out.println("데이터 입력을 시작합니다.");
+		System.out.println("정보 입력을 시작합니다.");
 		System.out.print("이름 : ");
-		String na = MenuViewer.sc.nextLine();
+		String na = sc.nextLine();
 		System.out.print("전화번호 : ");
-		String pn = MenuViewer.sc.nextLine();
+		String nu = sc.nextLine();
 		System.out.print("생년월일 : ");
-		String br = MenuViewer.sc.nextLine();
+		String br = sc.nextLine();
 		
-		phInfo[curCnt++] = new PhoneInfo(na,pn,br);
-		
+		phInfo[curCnt] = new PhoneInfo(na, nu, br);
+		curCnt++;
 		System.out.println("데이터 입력이 완료되었습니다. \n");
 	}
-	
-	public void infoSerch() {
-		System.out.println("데이터 검색을 시작합니다. \n");
+	public void searchData() {
+		System.out.println("정보 검색을 시작합니다.");
 		System.out.print("이름 : ");
-		String name1 = MenuViewer.sc.nextLine();	
-		
-		int no = search(name1);
-			if(no < 0) {
-				System.out.println("==> 해당 정보가 없습니다. \n");
-			}	else	{				
-			System.out.println();
-			phInfo[no].showInfo();
+		String name = sc.nextLine();
+		int no = search(name);
+		if(no < 0) {
+			System.out.println("입력한 정보가 없습니다.");
+		}	else {
+			phInfo[no].showPhoneInfo();
 			System.out.println("데이터 검색이 완료되었습니다. \n");
 		}
-}		
-	
-	
-	public void deleteInfo() {
-		System.out.println("데이터 삭제를 시작합니다.");
-		
+	}
+	public void deleteData() {
+		System.out.println("정보 삭제를 시작합니다.");
 		System.out.print("이름 : ");
-		String name2 = MenuViewer.sc.nextLine();
-		
-
-			int no = search(name2);
-			if(no < 0) {
-				System.out.println("==> 해당 정보가 없습니다. \n");
-			}	else	{
-				for(int i=no; i < (curCnt-1); i++) {
-					phInfo[i] = phInfo[i+1];
-					
-					curCnt--;
-					System.out.println("데이터 삭제가 완료되었습니다. \n");
-				}
+		String name = sc.nextLine();
+		int ru = search(name);
+		if(ru < 0) {
+			System.out.println("입력한 정보가 없습니다.");
+		}	else {
+			for(int j=ru; j < curCnt; j++) {
+				phInfo[ru] = phInfo[ru + 1];				
 			}
-	
-	}
-	
-	int search(String na) {
-		for(int i=0; i < curCnt; i++) {
-			PhoneInfo curInfo = phInfo[i];
-			if(na.compareTo(curInfo.name) == 0)
-				return i;
+			curCnt--;
+			System.out.println("데이터 삭제가 완료되었습니다. \n");
 		}
-		return -1;
 	}
+	int search(String name) {
+		for(int cnt = 0; cnt < curCnt; cnt++) {
+			PhoneInfo info = phInfo[cnt];
+			if(name.compareTo(info.name) == 0)
+				return cnt;
+		}
+		
+		return -1;
+	}	
 }
 
-
 class MenuViewer {
-	public static Scanner sc = new Scanner(System.in);
-	
 	public static void showMenu() {
 		System.out.println("선택하세요...");
 		System.out.println("1. 데이터 입력");
 		System.out.println("2. 데이터 검색");
 		System.out.println("3. 데이터 삭제");
 		System.out.println("4. 프로그램 종료");
-		System.out.print("선택 : ");
+		System.out.print("선택: ");
 	}
 }
-public class PhoneBookVer01 {
-	
+
+class PhoneBookVer01 {
 	public static void main(String[] args) {
-		PhoneBookManager pbk = new PhoneBookManager();
-		int no;
+		PhoneBookManager manager = new PhoneBookManager();
+		int cho;
 		
-		ot:
 		while(true) {
 			MenuViewer.showMenu();
-			no = MenuViewer.sc.nextInt();
-			MenuViewer.sc.nextLine();
+			cho = manager.sc.nextInt();
+			manager.sc.nextLine();
 			
-			switch(no) {
-			case 1:
-					pbk.inputData();
+			switch(cho) {
+			case 1 :
+					manager.inputData();
 					break;
-			case 2: 
-					
-					
-					pbk.infoSerch();
+			case 2 :
+					manager.searchData();
 					break;
-			case 3:
-					pbk.deleteInfo();
-					break;		
-			case 4:
+			case 3 :
+					manager.deleteData();
+					break;
+			case 4 :
 					System.out.println("프로그램을 종료합니다.");
-					break ot;
-					
+					return;
+				
 			}
 		}
-	}	
+	}
 }
