@@ -3,7 +3,7 @@
  * @since	2020.03.10
  * @version ver.0.4
  */
-
+/*
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -196,7 +196,9 @@ class PhoneBookManager {
 	}
 	
 }
+*/
 
+//----------------------------------------------------------
 /*
 class PhoneBookManager {
 	final int MAX_CNT = 100;
@@ -309,6 +311,8 @@ class PhoneBookManager {
 	}	
 }
 */
+//------------------------------------------------------------
+/*
 class MenuViewer {
 	public static void showMenu() {
 		System.out.println("선택하세요...");
@@ -359,3 +363,4 @@ class PhoneBookVer01 {
 		}
 	}
 }
+*/
